@@ -1,4 +1,7 @@
 from PySide2 import QtWidgets, QtCore, QtGui
+from ..model.document_model import DocumentModel
+from ..model.document import Document
+from ..model.page import Page
 
 
 # FIXME: Raspodeliti nadleznosti na druge view-ove.
@@ -17,7 +20,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menubar = QtWidgets.QMenuBar(self)
         self.help_menu = QtWidgets.QMenu("Help")
         self.toolbar = QtWidgets.QToolBar(self)
-        self.central_widget = QtWidgets.QLabel("Centralni widget u izradi", self)
+        self.central_widget = QtWidgets.QTableView(self)
         self.statusbar = QtWidgets.QStatusBar(self)
         self.project_dock = QtWidgets.QDockWidget(self)
 
@@ -29,11 +32,26 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Dodavanje elemenata na glavni prozor
         self._populate_main_window()
+
+    def _dummy_document(self):
+        """
+        Kreiranje jednog dokumenta za testiranje modela i view-a.
+        """
+        document = Document("test", "Aleksandra")
+        page1 = Page("Modeli podataka", "Kreiranje modela na osnovu QAbstractItemModel-a")
+        page2 = Page("State obrazac", "Primer i primena state obrasca", 2)
+        document.add_page(page1)
+        document.add_page(page2)
+
+        document_model = DocumentModel(document)
+        return document_model
         
 
     def _populate_main_window(self):
         # populisanje menija
         self._populate_menus()
+        # postavljanje modela u widget-e
+        self._set_models()
         # postavljanje widgeta na window
         self.setMenuBar(self.menubar)
         self.addToolBar(self.toolbar)
@@ -51,6 +69,9 @@ class MainWindow(QtWidgets.QMainWindow):
         """
         self.help_menu.addAction(self.menu_actions["about"])
         self.menubar.addMenu(self.help_menu)
+
+    def _set_models(self):
+        self.central_widget.setModel(self._dummy_document())
 
     def _bind_actions(self):
         """
