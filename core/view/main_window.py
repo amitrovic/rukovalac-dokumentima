@@ -40,8 +40,8 @@ class MainWindow(QtWidgets.QMainWindow):
         document = Document("test", "Aleksandra")
         page1 = Page("Modeli podataka", "Kreiranje modela na osnovu QAbstractItemModel-a")
         page2 = Page("State obrazac", "Primer i primena state obrasca", 2)
-        document.add_page(page1)
-        document.add_page(page2)
+        document.add_child(page1)
+        document.add_child(page2)
 
         document_model = DocumentModel(document)
         return document_model

@@ -3,12 +3,15 @@ from PySide2.QtCore import QAbstractItemModel, QModelIndex, Qt
 class DocumentModel(QAbstractItemModel):
     def __init__(self, document, parent=None):
         super().__init__(parent)
-        self.document = document
+        self.document = document # korenski element
 
     def index(self, row, column, parent=QModelIndex()):
         # vracamo indeks koji je indeks dokumenta (stranica na zadatom redu)
         # FIXME: dodati provere da li je validan indeks (red, kolona)
-        return self.createIndex(row, column, self.document.pages[row])
+        if parent.isValid():
+            element = parent.internalPointer()
+            self.createIndex(row, column, element.children[row])
+        return self.createIndex(row, column, self.document.children[row])
 
     def parent(self, child):
         # FIXME: ukoliko je dublja hijerarhijska struktura generisati indeks preko createIndex metode
@@ -17,7 +20,10 @@ class DocumentModel(QAbstractItemModel):
         return QModelIndex()
 
     def rowCount(self, parent=QModelIndex()):
-        return len(self.document.pages)
+        if parent.isValid():
+            element = parent.internalPointer()
+            return len(element.children)
+        return len(self.document.children)
 
     def columnCount(self, parent=QModelIndex()):
         return 3
