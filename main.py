@@ -1,8 +1,12 @@
 import sys
 from PySide2 import QtWidgets
 from core.view.main_window import MainWindow
+from component_framework.component_framework import ComponentFramework
 
 def main():
+    # Pravljenje komponentnog okruzenja
+    component_framework = ComponentFramework()
+    component_framework.install_components()
     # Kreiranje aplikacije
     app = QtWidgets.QApplication(sys.argv)
     # Kreiranje glavnog prozora
