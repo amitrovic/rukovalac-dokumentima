@@ -54,10 +54,12 @@ class DocumentModel(QAbstractItemModel):
         element = index.internalPointer() # page
         if index.column() == 0:
             # setovati naslov
-            element.title = data
+            old = element.title
+            element.title = data if data != "" else old
         elif index.column() == 1:
             # setovati sadrzaj
-            element.text = data
+            old = element.text
+            element.text = data if data != "" else old
         elif index.column() == 2:
             # setovati broj strane
             try:

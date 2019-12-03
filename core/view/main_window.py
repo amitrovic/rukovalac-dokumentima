@@ -66,9 +66,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _populate_project_dock(self):
         self.project_dock.setWidget(QtWidgets.QTreeView(self.project_dock))
-        model = QtWidgets.QFileSystemModel()
-        model.setRootPath(QtCore.QDir.currentPath())
-        self.project_dock.widget().setModel(model)
+        # TODO: Primer za file system sadrzaj
+        # model = QtWidgets.QFileSystemModel()
+        # model.setRootPath(QtCore.QDir.currentPath())
+        # self.project_dock.widget().setModel(model)
+        # self.project_dock.widget().setRootIndex(model.index(QtCore.QDir.currentPath()))
+
+        # primer dokument modela
+        self.project_dock.widget().setModel(self.central_widget.widget(0).model())
 
     def _populate_tab_widget(self):
         """
